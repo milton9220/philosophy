@@ -90,8 +90,7 @@ $total_post=$featured_posts->found_posts;?>
                             
                                 <div class="entry__content">
                                     <span class="entry__category">
-                                    
-                                    
+   
                                        <?php for($j=0;$j<count($categories[$i]);$j++){?>
 
                                         <a href=""><?php echo $categories[$i][$j]->name."</br>";?></a>
