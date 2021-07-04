@@ -1,5 +1,6 @@
 <?php
 require_once(get_theme_file_path('inc/tgm.php'));
+require_once(get_theme_file_path('inc/attachments.php'));
 if(site_url()=='http://localhost/alpha'){
     define("VERSION",time());
 }
@@ -38,8 +39,25 @@ function philosopy_assets(){
 }
 add_action("wp_enqueue_scripts","philosopy_assets");
 
+function philosophy_admin_assets($hook){
+
+    if(isset($_REQUEST['post']) || isset($_REQUEST['post_ID'])){
+		$post_id=empty($_REQUEST['post_ID']) ? $_REQUEST['post']:$_REQUEST['post_ID'];
+	}
+
+    if('post.php'==$hook){
+        $post_format=get_post_format($post_id);
+        wp_enqueue_script("admin-js",get_theme_file_uri('/assets/js/admin.js'),array('jquery'),VERSION,true);
+        wp_localize_script("admin-js","philosophy_pf",array("format"=>$post_format));
+    }
+    
+
+}
+add_action("admin_enqueue_scripts","philosophy_admin_assets");
+
 function philosophy_pagination(){
-    global $wp_query;
+    global $wp_query;;
+    
     $links= paginate_links(array(
         'current'       =>max(1,get_query_var('paged')),
         'total'         =>$wp_query->max_num_pages,
