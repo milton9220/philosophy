@@ -19,21 +19,15 @@ while($featured_posts->have_posts()){
         "thumbnail"=>get_the_post_thumbnail_url(get_the_ID(),"large"),
         "author" =>get_the_author_meta("display_name"),
         "author_avatar"=>get_avatar_url(get_the_author_meta("ID")),
-        // "cat" =>$categories[0][0]->name
+        "permalink" =>get_the_permalink(),
+        "author_url"=>get_author_posts_url(get_the_author_meta("ID"))
 
     );
 }
 $total_post=$featured_posts->found_posts;?>
 
 
- <!-- <pre><//?php// print_r($categories); ?></pre>
- <pre>
- // <?//php//for($i=0;$i<count($categories);$i++){
-       // for($j=0;$j<count($categories[$i]);$j++){
-            //echo $categories[$i][$j]->name."</br>";
-        //}
- // }?>
-  </pre> -->
+
 
  <?php if($featured_posts->post_count>1){
 ?>
@@ -51,7 +45,7 @@ $total_post=$featured_posts->found_posts;?>
                                 <?php for($i=0;$i<1;$i++){
                                         for($j=0;$j<count($categories[$i]);$j++){?>
 
-                                        <a href=""><?php echo $categories[$i][$j]->name."</br>";?></a>
+                                        <a href="<?php echo get_category_link($categories[$i][$j]->cat_ID); ?>"><?php echo $categories[$i][$j]->name."</br>";?></a>
                                             
                                        <?php }
                                     }
@@ -60,15 +54,15 @@ $total_post=$featured_posts->found_posts;?>
                                 
                                 </span>
 
-                                <h1><a href="#0" title=""><?php echo esc_html($posts_data[0]['title']); ?></a></h1>
+                                <h1><a href="<?php echo esc_url($posts_data[0]['permalink']); ?>" title=""><?php echo esc_html($posts_data[0]['title']); ?></a></h1>
 
                                 <div class="entry__info">
-                                    <a href="#0" class="entry__profile-pic">
+                                    <a href="<?php echo esc_url($posts_data[0]['author_url']); ?>" class="entry__profile-pic">
                                         <img class="avatar" src="<?php echo esc_url($posts_data[0]['author_avatar']); ?>" alt="">
                                     </a>
 
                                     <ul class="entry__meta">
-                                        <li><a href="#0"><?php echo esc_html($posts_data[0]['author']); ?></a></li>
+                                        <li><a href="<?php echo esc_url($posts_data[0]['author_url']); ?>"><?php echo esc_html($posts_data[0]['author']); ?></a></li>
                                         <li><?php echo esc_html($posts_data[0]['date']); ?></li>
                                     </ul>
                                 </div>
@@ -93,7 +87,7 @@ $total_post=$featured_posts->found_posts;?>
    
                                        <?php for($j=0;$j<count($categories[$i]);$j++){?>
 
-                                        <a href=""><?php echo $categories[$i][$j]->name."</br>";?></a>
+                                        <a href="<?php echo get_category_link($categories[$i][$j]->cat_ID); ?>"><?php echo $categories[$i][$j]->name."</br>";?></a>
                                             
                                     <?php }
                                     
@@ -102,15 +96,15 @@ $total_post=$featured_posts->found_posts;?>
                                     
                                     </span>
     
-                                    <h1><a href="#0" title=""><?php echo esc_html($posts_data[$i]['title']); ?></a></h1>
+                                    <h1><a href="<?php echo esc_url($posts_data[$i]['permalink']); ?>" title=""><?php echo esc_html($posts_data[$i]['title']); ?></a></h1>
     
                                     <div class="entry__info">
-                                        <a href="#0" class="entry__profile-pic">
+                                        <a href="<?php echo esc_url($posts_data[$i]['author_url']); ?>" class="entry__profile-pic">
                                             <img class="avatar" src="<?php echo esc_url($posts_data[$i]['author_avatar']); ?>" alt="">
                                         </a>
     
                                         <ul class="entry__meta">
-                                            <li><a href="#0"><?php echo esc_html($posts_data[$i]['author']); ?></a></li>
+                                            <li><a href="<?php echo esc_url($posts_data[$i]['author_url']); ?>"><?php echo esc_html($posts_data[$i]['author']); ?></a></li>
                                             <li><?php echo esc_html($posts_data[0]['date']); ?></li>
                                         </ul>
                                     </div>

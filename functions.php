@@ -1,6 +1,8 @@
 <?php
 require_once(get_theme_file_path('inc/tgm.php'));
 require_once(get_theme_file_path('inc/attachments.php'));
+require_once( get_theme_file_path( "/widgets/social-icons-widget.php" ) );
+
 if(site_url()=='http://localhost/alpha'){
     define("VERSION",time());
 }
@@ -18,6 +20,13 @@ function philosophy_theme_setup(){
     add_editor_style("/assets/css/editor-style.css");
 
     register_nav_menu("topmenu",__("Top Menu","philosophy"));
+    register_nav_menus(array(
+
+        "footer-left"=>__("Footer Left Menu","philosophy"),
+        "footer-social"=>__("Footer Social Menu","philosophy"),
+
+    ));
+
     add_image_size("philosophy-square-size",400,400,true);
 }
 
@@ -40,13 +49,14 @@ function philosopy_assets(){
 add_action("wp_enqueue_scripts","philosopy_assets");
 
 function philosophy_admin_assets($hook){
-
+    
     if(isset($_REQUEST['post']) || isset($_REQUEST['post_ID'])){
 		$post_id=empty($_REQUEST['post_ID']) ? $_REQUEST['post']:$_REQUEST['post_ID'];
 	}
 
     if('post.php'==$hook){
         $post_format=get_post_format($post_id);
+       
         wp_enqueue_script("admin-js",get_theme_file_uri('/assets/js/admin.js'),array('jquery'),VERSION,true);
         wp_localize_script("admin-js","philosophy_pf",array("format"=>$post_format));
     }
@@ -56,7 +66,7 @@ function philosophy_admin_assets($hook){
 add_action("admin_enqueue_scripts","philosophy_admin_assets");
 
 function philosophy_pagination(){
-    global $wp_query;;
+    global $wp_query;
     
     $links= paginate_links(array(
         'current'       =>max(1,get_query_var('paged')),
@@ -73,3 +83,63 @@ function philosophy_pagination(){
 
     echo $links;
 }
+remove_action("term_description","wpautop");
+
+function philosophy_widget() {
+    register_sidebar( array(
+        'name'          => __( 'Aboust Us Page', 'philosophy' ),
+        'id'            => 'about-us',
+        'description'   => __( 'About Us page Widgets', 'philosophy' ),
+        'before_widget' => '<div id="%1$s" class="col-block %2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h2 class="quarter-top-margin">',
+        'after_title'   => '</h2>',
+    ) );
+    register_sidebar( array(
+        'name'          => __( 'Contact Page Maps Section', 'philosophy' ),
+        'id'            => 'google-maps',
+        'description'   => __( 'Widgets in this area will be shown on contact page ', 'philosophy' ),
+        'before_widget' => '<div id="%1$s" class="%2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '',
+        'after_title'   => '',
+    ) );
+    register_sidebar( array(
+        'name'          => __( 'Contact Page Information', 'philosophy' ),
+        'id'            => 'contact-info',
+        'description'   => __( 'Widgets in this area will be shown on contact page ', 'philosophy' ),
+        'before_widget' => '<div id="%1$s" class="col-block %2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h2 class="quarter-top-margin">',
+        'after_title'   => '</h2>',
+    ) );
+    register_sidebar( array(
+        'name'          => __( 'Footer About Section', 'philosophy' ),
+        'id'            => 'footer-about',
+        'description'   => __( 'Widgets in this area will be shown on footer about area ', 'philosophy' ),
+        'before_widget' => '<div id="%1$s" class="%2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h2>',
+        'after_title'   => '</h2>',
+    ) );
+    register_sidebar( array(
+        'name'          => __( 'Footer Middle Widget Section', 'philosophy' ),
+        'id'            => 'footer-middle',
+        'description'   => __( 'Widgets in this area will be shown on footer  area ', 'philosophy' ),
+        'before_widget' => '<div id="%1$s" class="s-footer__linklist %2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h4>',
+        'after_title'   => '</h4>',
+    ) );
+    register_sidebar( array(
+        'name'          => __( 'Footer Newsletter Widget Section', 'philosophy' ),
+        'id'            => 'footer-newsletter',
+        'description'   => __( 'Widgets in this area will be shown on footer about area ', 'philosophy' ),
+        'before_widget' => '<div id="%1$s" class=" %2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h4>',
+        'after_title'   => '</h4>',
+    ) );
+}
+
+add_action( 'widgets_init', 'philosophy_widget' );

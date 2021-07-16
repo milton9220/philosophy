@@ -1,7 +1,7 @@
 ;(function($){
 
     $(document).ready(function(){
-
+        
         $("#post-formats-select .post-format").on("click",function(){
 
             if($(this).attr("id")=="post-format-gallery"){
@@ -19,3 +19,4 @@
     });
 
 })(jQuery);
+
