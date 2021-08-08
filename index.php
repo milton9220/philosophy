@@ -6,8 +6,11 @@
     <section class="s-content">
         
         <div class="row masonry-wrap">
+        <?php if(!have_posts()):?>
+                    <h2 class="text-center">There have no post</h2>
+                 <?php endif; ?>
             <div class="masonry">
-
+               
                 <div class="grid-sizer"></div>
 
                 <?php while(have_posts()){

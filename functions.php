@@ -143,3 +143,62 @@ function philosophy_widget() {
 }
 
 add_action( 'widgets_init', 'philosophy_widget' );
+
+function before_cat_title_hook(){
+    echo "<h4>Before Category title</h4>";
+}
+
+add_action("before_category_title","before_cat_title_hook");
+
+remove_action("before_category_title","before_cat_title_hook");
+
+function after_cat_title_hook(){
+    echo "<h4>After Category title</h4>";
+}
+
+add_action("after_category_title","after_cat_title_hook");
+
+//ekta category te kotojon visitor asche seta dekhar jonno category.php te jei action hook ta define kora hoise oita use korbo
+
+function beginning_category_page( $category_title ) {
+    if ( "Music" == $category_title ) {
+        $visit_count = get_option( "category_music" );
+        $visit_count = $visit_count ? $visit_count : 0;
+        $visit_count ++;
+        update_option( "category_music", $visit_count );
+    }
+}
+
+add_action( "philosphy_category_page", "beginning_category_page" );
+
+function change_something_text($text){
+    return strtoupper($text)." "."World";
+   
+}
+add_filter("philosophy_something_text","change_something_text");
+
+function philosophy_home_class_dynamic($class_name){
+    if(is_home()){
+        return $class_name;
+    }
+    else{
+        return "";
+    }
+}
+add_filter("philosophy_home_class","philosophy_home_class_dynamic");
+
+//post type r slug change korar jonno
+
+function philosophy_cpt_slug_fix($post_link,$post_id){
+    $p=get_post($post_id);
+    if(is_object($p) && 'chapter'==get_post_type($post_id)){
+        $parent_post_id=get_field("parent_book");
+        $parent_post=get_post($parent_post_id);
+        if($parent_post){
+            $post_link=str_replace("%book%",$parent_post->post_name,$post_link);
+        }
+        return $post_link;
+    }
+}
+add_filter("post_type_link","philosophy_cpt_slug_fix",1,2);
+
