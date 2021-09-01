@@ -58,31 +58,41 @@
             </div> <!-- end about -->
 
         </div> <!-- end row -->
-
+         <?php $philosophy_tags_show=cs_get_option('footer_tag');
+             if($philosophy_tags_show):
+         ?>               
         <div class="row bottom tags-wrap">
             <div class="col-full tags">
-                <h3>Tags</h3>
+                <?php 
+                $philosophy_footer_tag_heading=apply_filters('philosophy_footer_tag_heading',__("Tags","philosophy"));
+                $philosophy_tag_items=apply_filters("philosophy_tag_list",get_tags());
+                
+                ?>
+                <h3><?php echo $philosophy_footer_tag_heading; ?></h3>
 
                 <div class="tagcloud"> 
                     <?php
-                         $tags = get_tags(); //taxonomy=post_tag
-                         $count=0;
-                         if($tags){
-                            foreach($tags as $tag):?>
-                                <?php $count++;
-                                  if($count<=10):?>
-                                    <a href="<?php echo esc_url(get_category_link($tag->cat_ID)); ?>"><?php echo esc_html($tag->name); ?></a>
-                            <?php 
-                            endif;
-                            endforeach; 
-                         }
+
+                       
+                        if(is_array($philosophy_tag_items)){
+                            foreach($philosophy_tag_items as $tag){
+                                printf('<a href="%s">%s</a>',get_term_link($tag->term_id),$tag->name);
+                            }
+                        }
                         ?>
                         
                     
                 </div> <!-- end tagcloud -->
+                <?php $tags=get_tags(array(
+                            'taxonomy' =>'language',
+                            'fields'  =>'id=>name'
+                )); ?>
+                <pre>
+                    <?php print_r($tags); ?>
+                </pre>
             </div> <!-- end tags -->
         </div> <!-- end tags-wrap -->
-
+        <?php endif; ?>        
     </section> <!-- end s-extra -->
 
 
